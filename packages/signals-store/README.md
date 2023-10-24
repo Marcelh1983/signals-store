@@ -20,12 +20,9 @@ In reactJs you can add the store in a ```useRef``` if you use the store in a sin
 export function MyComponent() {
   const store = useRef(new Store<StateModel>(initialState));
   const signalState = store.current.signal;
-  const init = useRef(false);
-
   const computedState = computed(() => {
     return signalState.value;
   });
-
   const state = computedState.value;
 ```
 

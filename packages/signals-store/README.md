@@ -7,7 +7,7 @@ Created to seperate state management from the UI components without a lot of boi
 
 ## Examples
 
-Here a [demo](https://signals-store.app/) and the [code](https://github.com/Marcelh1983/signals-store/tree/main/apps/example) 
+Here a [demo](https://signals-store.app/) and the [code](https://github.com/Marcelh1983/signals-store/tree/main/packages/example/src/app) 
 
 ### create
 ```typescript

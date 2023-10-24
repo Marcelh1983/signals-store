@@ -1,60 +1,55 @@
-import React, { useEffect, useRef } from 'react';
-import { Store } from 'signals-store';
-import { ClearFilterAction, FilterAction, LoadAction, StateModel, initialState } from './store';
-import { computed } from "@preact/signals-react";
+import React, { useContext, useEffect, useRef } from 'react';
+import { ClearFilterAction, FilterAction, LoadAction } from './store';
+import { AppContext } from './context';
 
 export function App() {
-  const store = useRef(new Store<StateModel>(initialState));
-  const signalState = store.current.signal;
+  const { store, signalState } = useContext(AppContext);
+  const state = signalState.value;
   const init = useRef(false);
-
-  const computedState = computed(() => {
-    return signalState.value;
-  });
 
   useEffect(() => {
     const getData = async () => {
       init.current = true;
-      await store.current.dispatch(new LoadAction());
+      await store.dispatch(new LoadAction());
     }
     if (!init.current) {
       getData();
     }
-  }, []);
+  }, [store]);
 
   const normal =
     'm-2 bg-transparent hover:bg-blue-500 text-bg-blue-500 hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded';
   const active =
     'm-2 cursor-default bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded';
-  if (!store.current || !store.current.signal || !store.current.signal.value || store.current.signal.value.loading) {
+  if (!state || state.loading) {
     return <div>Loading..</div>
   }
-  const state = computedState.value;
+
   return <div>
     <div className="flex">
       <button
-        onClick={() => store.current?.dispatch(new FilterAction({ gender: 'female' }))}
+        onClick={() => store.dispatch(new FilterAction({ gender: 'female' }))}
         disabled={state.genderFilter === 'female'}
         className={state.genderFilter === 'female' ? active : normal}
       >
         Female
       </button>
       <button
-        onClick={() => store.current?.dispatch(new FilterAction({ gender: 'male' }))}
+        onClick={() => store.dispatch(new FilterAction({ gender: 'male' }))}
         disabled={state.genderFilter === 'male'}
         className={state.genderFilter === 'male' ? active : normal}
       >
         Male
       </button>
       <button
-        onClick={() => store.current?.dispatch(new FilterAction({ gender: 'other' }))}
+        onClick={() => store.dispatch(new FilterAction({ gender: 'other' }))}
         disabled={state.genderFilter === 'other'}
         className={state.genderFilter === 'other' ? active : normal}
       >
         Other
       </button>
       <button
-        onClick={() => store.current?.dispatch(new ClearFilterAction())}
+        onClick={() => store.dispatch(new ClearFilterAction())}
         disabled={!state.genderFilter}
         className={state.genderFilter === 'none' ? active : normal}
       >

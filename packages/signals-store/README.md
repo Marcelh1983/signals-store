@@ -16,6 +16,38 @@ const store = new Store<ActivityStateModel>(initialState, !environment.productio
 ```
 In reactJs you can add the store in a ```useRef``` if you use the store in a single component or an ```useContext``` when using it is multiple components. The store can be mapped to the component state like this:
 
+#### useContext
+
+``` typescript
+import { Signal, computed } from '@preact/signals-react';
+import { StateModel, initialState } from './store';
+import { Store } from 'signals-store';
+import { createContext, useContext } from 'react';
+
+export type AppContext = {
+  signalState: Signal<StateModel>;
+  store: Store<StateModel>;
+};
+
+const store = new Store<StateModel>(initialState);
+const signalState = computed(() => store.signal.value);
+
+export const AppContext = createContext<AppContext>({
+  store,
+  signalState,
+});
+export const useAppContext = () => useContext(AppContext);
+```
+
+In component: 
+
+``` typescript
+  const { store, signalState } = useContext(AppContext);
+  const state = signalState.value;
+```
+
+#### useRef
+
 ```typescript
 export function MyComponent() {
   const store = useRef(new Store<StateModel>(initialState));

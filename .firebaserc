@@ -1,0 +1,16 @@
+{
+  "projects": {
+    "default": "rx-basic-store",
+    "example": "rx-basic-store"
+  },
+  "targets": {
+    "rx-basic-store": {
+      "hosting": {
+        "example": [
+          "signals-store"
+        ]
+      }
+    }
+  },
+  "etags": {}
+}

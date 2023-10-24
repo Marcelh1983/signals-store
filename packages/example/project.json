@@ -1,0 +1,93 @@
+{
+  "name": "example",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "packages/example/src",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "@nx/vite:build",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "outputPath": "dist/packages/example"
+      },
+      "configurations": {
+        "development": {
+          "mode": "development"
+        },
+        "production": {
+          "mode": "production",
+          "fileReplacements": [
+            {
+              "replace": "packages/example/src/environments/environment.ts",
+              "with": "packages/example/src/environments/environment.prod.ts"
+            }
+          ]
+        },
+        "test-env": {
+          "mode": "production",
+          "fileReplacements": [
+            {
+              "replace": "packages/example/src/environments/environment.ts",
+              "with": "packages/example/src/environments/environment.acc.ts"
+            }
+          ]
+        }
+      }
+    },
+    "serve": {
+      "executor": "@nx/vite:dev-server",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "example:build"
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "example:build:development",
+          "hmr": true
+        },
+        "production": {
+          "buildTarget": "example:build:production",
+          "hmr": false
+        }
+      }
+    },
+    "preview": {
+      "executor": "@nx/vite:preview-server",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "example:build"
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "example:build:development"
+        },
+        "production": {
+          "buildTarget": "example:build:production"
+        }
+      }
+    },
+    "test": {
+      "executor": "@nx/vite:test",
+      "outputs": ["{workspaceRoot}/coverage/packages/example"],
+      "options": {
+        "passWithNoTests": true,
+        "reportsDirectory": "../../coverage/packages/example"
+      }
+    },
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["packages/example/**/*.{ts,tsx,js,jsx}"]
+      }
+    },
+    "serve-static": {
+      "executor": "@nx/web:file-server",
+      "options": {
+        "buildTarget": "example:build"
+      }
+    }
+  },
+  "tags": []
+}

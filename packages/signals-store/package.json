@@ -1,0 +1,26 @@
+{
+  "name": "signals-store",
+  "version": "0.0.1",
+  "license": "MIT",
+  "author": {
+    "name": "Marcel Hoekstra"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Marcelh1983/signals-store.git"
+  },
+  "keywords": [
+    "Store",
+    "RxJs",
+    "React"
+  ],
+  "main": "index.js",
+  "types": "src/index.d.ts",
+  "bugs": {
+    "url": "https://github.com/Marcelh1983/signals-store/issues"
+  },
+  "homepage": "https://github.com/Marcelh1983/signals-store",
+  "peerDependencies": {
+    "@preact/signals-core": ">= 1.0.0"
+  }
+}

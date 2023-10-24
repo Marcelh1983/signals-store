@@ -1,0 +1,14 @@
+{
+  "hosting": {
+    "target": "example",
+    "public": "dist/packages/example",
+    "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
+    "predeploy": ["nx build example --prod"],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
+  }
+}

@@ -24,7 +24,7 @@ export function App() {
     'm-2 bg-transparent hover:bg-blue-500 text-bg-blue-500 hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded';
   const active =
     'm-2 cursor-default bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded';
-  if (!signalState || signalState.$loading.value) {
+  if (signalState.$loading.value) {
     return <div>Loading..</div>
   }
 

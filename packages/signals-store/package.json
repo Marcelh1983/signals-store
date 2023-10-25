@@ -1,6 +1,6 @@
 {
   "name": "signals-store",
-  "version": "0.0.4",
+  "version": "0.1.0",
   "license": "MIT",
   "author": {
     "name": "Marcel Hoekstra"
@@ -21,6 +21,7 @@
   },
   "homepage": "https://github.com/Marcelh1983/signals-store",
   "peerDependencies": {
-    "@preact/signals-core": ">= 1.0.0"
+    "@preact/signals-core": ">= 1.0.0",
+    "deepsignal": ">= 1.0.0"
   }
 }

@@ -1,5 +1,5 @@
 # signals-store
-A simple store for state management using Signals. 
+A simple store for state management using [deepSignals](https://github.com/luisherranz/deepsignal). 
 Can be used in all frameworks that support Signals
 When providing a ```dataApi``` implentation you can automatically sync stata to for example firebase [(example)](https://github.com/Marcelh1983/signals-store/tree/main/packages/example/src/app/api-examples/firebase-api.ts) or localStorage [(example)](https://github.com/Marcelh1983/signals-store/tree/main/packages/example/src/app/api-examples/localstorage-api.ts).
 
@@ -25,16 +25,16 @@ import { Store } from 'signals-store';
 import { createContext, useContext } from 'react';
 
 export type AppContext = {
-  signalState: Signal<StateModel>;
+  state: DeepSignal<StateModel>;
   store: Store<StateModel>;
 };
 
-const store = new Store<StateModel>(initialState);
-const signalState = computed(() => store.signal.value);
+const store = new Store<StateModel>({ ...initialState });
+const signalState = computed(() => store.signal);
 
 export const AppContext = createContext<AppContext>({
   store,
-  signalState,
+  state: signalState.value,
 });
 export const useAppContext = () => useContext(AppContext);
 ```
@@ -42,8 +42,8 @@ export const useAppContext = () => useContext(AppContext);
 In component: 
 
 ``` typescript
-  const { store, signalState } = useContext(AppContext);
-  const state = signalState.value;
+  const { store, state } = useContext(AppContext);
+  const loading = state.loading$;
 ```
 
 #### useRef
@@ -55,7 +55,7 @@ export function MyComponent() {
   const computedState = computed(() => {
     return signalState.value;
   });
-  const state = computedState.value;
+  const loading = computedState.loading$;
 ```
 
 ### actions

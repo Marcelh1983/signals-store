@@ -19,7 +19,7 @@ export class LoadAction implements ActionType<StateModel, never> {
   type = 'LOAD';
   async execute(ctx: StateContextType<StateModel>): Promise<StateModel> {
     const currentState = ctx.getState();
-    if (currentState.users.length === 0) {
+    if (!currentState?.users || currentState.users.length === 0) {
       ctx.patchState({ loading: true }); //
       const users = (
         (await (

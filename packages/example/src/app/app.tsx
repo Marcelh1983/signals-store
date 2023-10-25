@@ -3,8 +3,8 @@ import { ClearFilterAction, FilterAction, LoadAction } from './store';
 import { AppContext } from './context';
 
 export function App() {
-  const { store, signalState } = useContext(AppContext);
-  const state = signalState.value;
+  const { store, state: signalState } = useContext(AppContext);
+  // const state = signalState.value;
   const init = useRef(false);
 
   useEffect(() => {
@@ -13,6 +13,9 @@ export function App() {
       await store.dispatch(new LoadAction());
     }
     if (!init.current) {
+      store.subscribe(d => {
+        console.log('subscribe', d);
+      })
       getData();
     }
   }, [store]);
@@ -21,7 +24,7 @@ export function App() {
     'm-2 bg-transparent hover:bg-blue-500 text-bg-blue-500 hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded';
   const active =
     'm-2 cursor-default bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded';
-  if (!state || state.loading) {
+  if (!signalState || signalState.$loading.value) {
     return <div>Loading..</div>
   }
 
@@ -29,29 +32,29 @@ export function App() {
     <div className="flex">
       <button
         onClick={() => store.dispatch(new FilterAction({ gender: 'female' }))}
-        disabled={state.genderFilter === 'female'}
-        className={state.genderFilter === 'female' ? active : normal}
+        disabled={signalState.$genderFilter.value === 'female'}
+        className={signalState.$genderFilter.value === 'female' ? active : normal}
       >
         Female
       </button>
       <button
         onClick={() => store.dispatch(new FilterAction({ gender: 'male' }))}
-        disabled={state.genderFilter === 'male'}
-        className={state.genderFilter === 'male' ? active : normal}
+        disabled={signalState.$genderFilter.value === 'male'}
+        className={signalState.$genderFilter.value === 'male' ? active : normal}
       >
         Male
       </button>
       <button
         onClick={() => store.dispatch(new FilterAction({ gender: 'other' }))}
-        disabled={state.genderFilter === 'other'}
-        className={state.genderFilter === 'other' ? active : normal}
+        disabled={signalState.$genderFilter.value === 'other'}
+        className={signalState.$genderFilter.value === 'other' ? active : normal}
       >
         Other
       </button>
       <button
         onClick={() => store.dispatch(new ClearFilterAction())}
-        disabled={!state.genderFilter}
-        className={state.genderFilter === 'none' ? active : normal}
+        disabled={!signalState.$genderFilter.value}
+        className={signalState.$genderFilter.value === 'none' ? active : normal}
       >
         Unfiltered
       </button>
@@ -78,10 +81,10 @@ export function App() {
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
-                {state.users.filter(state.filter).length === 0 ?? (
+                {signalState.$users?.value.filter(signalState.filter).length === 0 ?? (
                   <div>No results</div>
                 )}
-                {state.users.filter(state.filter).map((user) => (
+                {signalState.$users?.value.filter(signalState.filter).map((user) => (
                   <tr key={user.email}>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="flex items-center">

@@ -1,13 +1,14 @@
-import { Signal, signal } from '@preact/signals-core';
+import { effect } from '@preact/signals-core';
 import { StateContext } from './context';
 import { DataApi } from './data-api';
 import { StoreType, ActionType, StateContextType } from './types';
 import { getDevToolsDispatcher } from './utils';
-
+import { deepSignal } from 'deepsignal';
+import type { DeepSignal } from 'deepsignal';
 export class Store<T> implements StoreType<T> {
   public ctx!: StateContextType<T>;
   public dataApi?: DataApi<T>;
-  public signal!: Signal<T>;
+  public signal!: DeepSignal<T>;
   protected devToolsDispacher: any;
   public storeContext = new Map<string, unknown>();
   protected callbacks: ((
@@ -22,7 +23,7 @@ export class Store<T> implements StoreType<T> {
     private devTools = false,
     api?: DataApi<T>
   ) {
-    this.signal = signal(initialState);
+    this.signal = deepSignal(initialState as object) as DeepSignal<T>;
     if (api) {
       this.dataApi = api;
     }
@@ -30,7 +31,7 @@ export class Store<T> implements StoreType<T> {
     this.ctx = new StateContext<T>(this);
   }
   subscribe(fn: (value: T) => void): () => void {
-    return this.signal.subscribe(fn);
+    return effect(() => fn(this.currentState()));
   }
 
   public async dispatch<P>(action: ActionType<T, P>): Promise<T> {

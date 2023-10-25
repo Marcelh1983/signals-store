@@ -1,7 +1,6 @@
 import { DataApi } from './data-api';
 import { ActionType, StateContextType } from './types';
 import { Store } from './store';
-
 export class StateContext<T> implements StateContextType<T> {
   constructor(public storeRef: Store<T>) {}
 
@@ -40,17 +39,21 @@ export class StateContext<T> implements StateContextType<T> {
       this.storeRef.storeContext.set(c.name, c.dependency);
     });
   };
-  getState = () => this.storeRef.signal.value;
+  getState = () => {
+    return JSON.parse(JSON.stringify(this.storeRef.signal)) as T;
+  };
 
   setState = (state: T) => {
-    const updatedState = { ...state };
-    this.storeRef.signal.value = updatedState;
-    return Promise.resolve(updatedState);
+    // loop through state and set each property
+    for (const key in state) {
+      (this.storeRef.signal as any)[key] = state[key];
+    }
+    return Promise.resolve(state);
   };
   patchState = (state: Partial<T>) => {
-    const current = this.storeRef.signal.value;
-    const merged = { ...current, ...state } as T;
-    this.storeRef.signal.value = merged;
-    return Promise.resolve(merged);
+    for (const key in state) {
+      (this.storeRef.signal as any)[key] = state[key];
+    }
+    return Promise.resolve(this.getState());
   };
 }

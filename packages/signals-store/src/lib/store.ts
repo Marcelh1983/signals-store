@@ -21,13 +21,14 @@ export class Store<T> implements StoreType<T> {
   constructor(
     public initialState: T,
     private devTools = false,
-    api?: DataApi<T>
+    api?: DataApi<T>,
+    context?: Map<string, unknown>
   ) {
     this.signal = deepSignal(initialState as object) as DeepSignal<T>;
     if (api) {
       this.dataApi = api;
     }
-
+    this.storeContext = context || new Map<string, unknown>();
     this.ctx = new StateContext<T>(this);
   }
   subscribe(fn: (value: T) => void): () => void {

@@ -40,7 +40,23 @@ export class StateContext<T> implements StateContextType<T> {
     });
   };
   getState = () => {
-    return JSON.parse(JSON.stringify(this.storeRef.signal)) as T;
+    // create a new object with the same properties as the signal expect for the properties that start with $
+    const state = {} as any;
+    for (const key in this.storeRef.signal) {
+      if (!key.startsWith('$')) {
+        const value = this.storeRef.signal[key];
+        // check if value is an object
+        if (typeof value === 'object') {
+          // if it is an object, then we need to clone it
+          state[key] = { ...value };
+        } else if (Array.isArray(value)) {
+          // if it is an array, then we need to clone it
+          state[key] = [...value];
+        }
+        state[key] = value;
+      }
+    }
+    return state as T;
   };
 
   setState = (state: T) => {

@@ -1,6 +1,6 @@
 {
   "name": "signals-store",
-  "version": "0.1.2",
+  "version": "0.1.5",
   "license": "MIT",
   "scripts": {
     "nx": "nx",
@@ -20,6 +20,7 @@
     "firebase": "^10.5.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-router-dom": "^6.18.0",
     "regenerator-runtime": "0.13.7",
     "tailwindcss": "3.3.3",
     "tslib": "^2.3.0"

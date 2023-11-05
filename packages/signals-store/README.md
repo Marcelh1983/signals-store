@@ -16,46 +16,16 @@ const store = new Store<ActivityStateModel>(initialState, !environment.productio
 ```
 In reactJs you can add the store in a ```useRef``` if you use the store in a single component or an ```useContext``` when using it is multiple components. The store can be mapped to the component state like this:
 
-#### useContext
+#### use
 
 ``` typescript
 import { Signal, computed } from '@preact/signals-react';
 import { StateModel, initialState } from './store';
 import { Store } from 'signals-store';
-import { createContext, useContext } from 'react';
 
-export type AppContext = {
-  state: DeepSignal<StateModel>;
-  store: Store<StateModel>;
-};
+export const store = new Store<StateModel>({ ...initialState });
+export const $state = computed(() => store.signal).value;
 
-const store = new Store<StateModel>({ ...initialState });
-const signalState = computed(() => store.signal);
-
-export const AppContext = createContext<AppContext>({
-  store,
-  state: signalState.value,
-});
-export const useAppContext = () => useContext(AppContext);
-```
-
-In component: 
-
-``` typescript
-  const { store, state } = useContext(AppContext);
-  const loading = state.loading$;
-```
-
-#### useRef
-
-```typescript
-export function MyComponent() {
-  const store = useRef(new Store<StateModel>(initialState));
-  const signalState = store.current.signal;
-  const computedState = computed(() => {
-    return signalState.value;
-  });
-  const loading = computedState.loading$;
 ```
 
 ### actions
@@ -114,12 +84,12 @@ dataApi: Optionally you can pass a dataApi implementation to automatically store
 
 ```typescript
   setStoreContext([
-    { name: 'history', dependency: useHistory() }
+    { name: 'api', dependency: new Api() }
   ])
 ```
 
 In the action you can use: 
 
 ```typescript
-  const auth = ctx.getContext<History>('auth');
+  const api = ctx.getContext<IApi>('api');
 ```

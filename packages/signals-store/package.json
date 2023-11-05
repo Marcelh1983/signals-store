@@ -1,6 +1,6 @@
 {
   "name": "signals-store",
-  "version": "0.1.2",
+  "version": "0.1.5",
   "license": "MIT",
   "author": {
     "name": "Marcel Hoekstra"
@@ -14,7 +14,7 @@
     "RxJs",
     "React"
   ],
-  "main": "index.js",
+  "main": "index.cjs.js",
   "types": "src/index.d.ts",
   "bugs": {
     "url": "https://github.com/Marcelh1983/signals-store/issues"
